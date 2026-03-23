@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>QA Masters – Playwright Automation Training | JS & TS</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #2a2a3a;
+    --accent: #7c3aed;
+    --accent2: #06b6d4;
+    --accent3: #f59e0b;
+    --text: #e8e8f0;
+    --muted: #8888aa;
+    --green: #10b981;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ──────────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.3rem; font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    letter-spacing: -0.02em;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.9rem; font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--accent); color: #fff;
+    padding: 0.5rem 1.25rem; border-radius: 6px;
+    text-decoration: none; font-size: 0.9rem; font-weight: 600;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* ── HERO ─────────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,58,237,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 80% 60%, rgba(6,182,212,0.1) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(245,158,11,0.07) 0%, transparent 60%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(124,58,237,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,58,237,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 100%);
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 860px; }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(124,58,237,0.15);
+    border: 1px solid rgba(124,58,237,0.3);
+    color: #c4b5fd;
+    padding: 0.4rem 1rem; border-radius: 100px;
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.05em;
+    text-transform: uppercase; margin-bottom: 1.5rem;
+    animation: fadeDown 0.6s ease both;
+  }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #7c3aed; animation: pulse 2s infinite; }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    font-weight: 800; line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.25rem;
+    animation: fadeDown 0.6s 0.1s ease both;
+  }
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .hero p {
+    color: var(--muted); font-size: 1.15rem;
+    max-width: 580px; margin: 0 auto 2.5rem;
+    animation: fadeDown 0.6s 0.2s ease both;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    animation: fadeDown 0.6s 0.3s ease both;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: linear-gradient(135deg, var(--accent), #6d28d9);
+    color: #fff; text-decoration: none;
+    padding: 0.85rem 2rem; border-radius: 8px;
+    font-weight: 700; font-size: 1rem;
+    box-shadow: 0 0 30px rgba(124,58,237,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 40px rgba(124,58,237,0.5); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text); text-decoration: none;
+    padding: 0.85rem 2rem; border-radius: 8px;
+    font-weight: 600; font-size: 1rem;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--accent); background: rgba(124,58,237,0.08); }
+
+  /* ── STATS BAR ────────────────────────────────────────── */
+  .stats-bar {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 2rem;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    text-align: center; gap: 1rem;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem; font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .stat-label { color: var(--muted); font-size: 0.85rem; margin-top: 0.25rem; }
+
+  /* ── SECTION COMMONS ──────────────────────────────────── */
+  section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section-tag {
+    display: inline-block;
+    background: rgba(6,182,212,0.1); border: 1px solid rgba(6,182,212,0.25);
+    color: var(--accent2); padding: 0.3rem 0.8rem; border-radius: 100px;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 0.75rem;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800; letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+  .section-sub { color: var(--muted); font-size: 1rem; max-width: 560px; margin-bottom: 3rem; }
+
+  /* ── HIGHLIGHTS ───────────────────────────────────────── */
+  .highlights { background: var(--bg); }
+  .highlights-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+  .hl-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.75rem;
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative; overflow: hidden;
+  }
+  .hl-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(124,58,237,0.05), transparent);
+    opacity: 0; transition: opacity 0.25s;
+  }
+  .hl-card:hover { border-color: rgba(124,58,237,0.4); transform: translateY(-3px); }
+  .hl-card:hover::before { opacity: 1; }
+  .hl-icon {
+    font-size: 2rem; margin-bottom: 0.75rem;
+  }
+  .hl-card h3 {
+    font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .hl-card p { color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
+
+  /* ── DEMO BANNER ──────────────────────────────────────── */
+  .demo-banner-wrap {
+    background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(6,182,212,0.1));
+    border: 1px solid rgba(124,58,237,0.3);
+    border-radius: 16px; padding: 3rem 2.5rem;
+    text-align: center; margin: 0 2rem;
+    position: relative; overflow: hidden;
+  }
+  .demo-banner-wrap::before {
+    content: ''; position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,0.2), transparent 70%);
+  }
+  .demo-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800; margin-bottom: 1rem;
+  }
+  .demo-details {
+    display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap;
+    margin: 1.5rem 0 2rem;
+  }
+  .demo-detail {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 1rem; font-weight: 500;
+  }
+  .demo-detail .icon { font-size: 1.3rem; }
+  .demo-detail strong { color: var(--accent2); }
+
+  /* ── TRAINERS ─────────────────────────────────────────── */
+  .trainers-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+  .trainer-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 2rem;
+    display: flex; gap: 1.5rem; align-items: flex-start;
+    transition: border-color 0.25s;
+  }
+  .trainer-card:hover { border-color: rgba(124,58,237,0.4); }
+  .trainer-avatar {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; flex-shrink: 0;
+  }
+  .trainer-info h3 {
+    font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+  .trainer-role { color: var(--accent2); font-size: 0.85rem; font-weight: 600; margin-bottom: 0.6rem; }
+  .trainer-info p { color: var(--muted); font-size: 0.88rem; line-height: 1.5; margin-bottom: 0.8rem; }
+  .trainer-links { display: flex; gap: 0.75rem; }
+  .trainer-links a {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.25);
+    color: #c4b5fd; padding: 0.3rem 0.7rem; border-radius: 6px;
+    text-decoration: none; font-size: 0.78rem; font-weight: 600;
+    transition: background 0.2s;
+  }
+  .trainer-links a:hover { background: rgba(124,58,237,0.25); }
+
+  /* ── SYLLABUS ─────────────────────────────────────────── */
+  .syllabus-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1rem;
+  }
+  .syllabus-module {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .syllabus-module:hover { border-color: rgba(124,58,237,0.35); }
+  .module-header {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 1rem 1.25rem; cursor: pointer;
+    background: var(--card);
+  }
+  .module-num {
+    background: linear-gradient(135deg, var(--accent), #6d28d9);
+    color: #fff; font-family: 'Syne', sans-serif;
+    font-size: 0.75rem; font-weight: 700;
+    padding: 0.2rem 0.55rem; border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .module-title {
+    font-family: 'Syne', sans-serif; font-size: 0.92rem; font-weight: 700;
+    flex: 1;
+  }
+  .module-toggle { color: var(--muted); font-size: 0.85rem; transition: transform 0.2s; }
+  .module-body {
+    padding: 0 1.25rem; max-height: 0; overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.2s;
+  }
+  .module-body.open { max-height: 600px; padding: 0 1.25rem 1.25rem; }
+  .module-body ul { list-style: none; }
+  .module-body ul li {
+    color: var(--muted); font-size: 0.85rem;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex; align-items: flex-start; gap: 0.5rem;
+  }
+  .module-body ul li:last-child { border-bottom: none; }
+  .module-body ul li::before { content: '→'; color: var(--accent); font-size: 0.75rem; margin-top: 0.15rem; flex-shrink: 0; }
+
+  /* ── PRICING ──────────────────────────────────────────── */
+  .pricing-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px; padding: 2.5rem;
+    max-width: 540px; margin: 0 auto;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .pricing-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+  .pricing-badge {
+    display: inline-block;
+    background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.3);
+    color: var(--green); padding: 0.3rem 0.75rem; border-radius: 100px;
+    font-size: 0.8rem; font-weight: 700; margin-bottom: 1rem;
+  }
+  .pricing-price {
+    font-family: 'Syne', sans-serif;
+    font-size: 3rem; font-weight: 800;
+    margin-bottom: 0.25rem;
+  }
+  .pricing-price span { color: var(--accent); }
+  .pricing-sub { color: var(--muted); font-size: 0.9rem; margin-bottom: 2rem; }
+  .pricing-features { list-style: none; text-align: left; margin-bottom: 2rem; }
+  .pricing-features li {
+    display: flex; gap: 0.75rem; align-items: flex-start;
+    padding: 0.6rem 0; border-bottom: 1px solid var(--border);
+    font-size: 0.92rem;
+  }
+  .pricing-features li:last-child { border-bottom: none; }
+  .pricing-features li .check { color: var(--green); font-size: 1rem; margin-top: 0.1rem; flex-shrink: 0; }
+  .free-tag {
+    background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3);
+    color: var(--accent3); padding: 0.15rem 0.5rem; border-radius: 4px;
+    font-size: 0.75rem; font-weight: 700; margin-left: 0.5rem;
+  }
+
+  /* ── FAQ ──────────────────────────────────────────────── */
+  .faq-list { max-width: 760px; }
+  .faq-item {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; margin-bottom: 0.75rem; overflow: hidden;
+  }
+  .faq-q {
+    padding: 1.1rem 1.5rem; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    font-weight: 600; font-size: 0.95rem;
+    transition: background 0.2s;
+  }
+  .faq-q:hover { background: rgba(124,58,237,0.06); }
+  .faq-icon { color: var(--accent); font-size: 1.1rem; transition: transform 0.25s; }
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.2s;
+    color: var(--muted); font-size: 0.9rem; line-height: 1.65;
+  }
+  .faq-a.open { max-height: 200px; padding: 0 1.5rem 1.25rem; }
+
+  /* ── CONTACT ──────────────────────────────────────────── */
+  .contact-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+  .contact-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1.75rem;
+    transition: border-color 0.2s;
+  }
+  .contact-card:hover { border-color: rgba(124,58,237,0.4); }
+  .contact-card h3 {
+    font-family: 'Syne', sans-serif; font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+  .contact-card .role { color: var(--accent2); font-size: 0.82rem; font-weight: 600; margin-bottom: 0.75rem; }
+  .contact-detail {
+    display: flex; align-items: center; gap: 0.5rem;
+    color: var(--muted); font-size: 0.88rem; margin-bottom: 0.4rem;
+  }
+  .contact-detail a { color: var(--muted); text-decoration: none; }
+  .contact-detail a:hover { color: var(--text); }
+
+  /* ── FOOTER ───────────────────────────────────────────── */
+  footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    text-align: center; padding: 2.5rem 2rem;
+    color: var(--muted); font-size: 0.85rem;
+  }
+  footer strong {
+    font-family: 'Syne', sans-serif;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    font-weight: 800;
+  }
+
+  /* ── WHATSAPP FLOAT ───────────────────────────────────── */
+  .wa-float {
+    position: fixed; bottom: 2rem; right: 2rem; z-index: 200;
+    background: #25D366; color: #fff;
+    width: 58px; height: 58px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; text-decoration: none;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+    transition: transform 0.2s;
+  }
+  .wa-float:hover { transform: scale(1.1); }
+
+  /* ── ANIMATIONS ───────────────────────────────────────── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* ── FULL-WIDTH WRAPPER ───────────────────────────────── */
+  .full-wrap { width: 100%; }
+
+  @media (max-width: 768px) {
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .nav-links { display: none; }
+    .demo-details { gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">QA Masters</div>
+  <ul class="nav-links">
+    <li><a href="#highlights">Highlights</a></li>
+    <li><a href="#trainers">Trainers</a></li>
+    <li><a href="#syllabus">Syllabus</a></li>
+    <li><a href="#coding-exams">Coding Exams</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="https://wa.link/playwrightautomation_preparationbatch_sr" class="nav-cta" target="_blank">Join WhatsApp Group</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      New Batch — Registrations Open Now
+    </div>
+    <h1>Master <span>Playwright Automation</span> with JS & TypeScript</h1>
+    <p>From zero to SDET-ready. Industry-focused curriculum, daily coding challenges, weekly mock interviews, and real-time project experience.</p>
+    <div class="hero-actions">
+      <a href="https://wa.link/playwrightautomation_preparationbatch_sr" class="btn-primary" target="_blank">
+        📲 Join WhatsApp Group
+      </a>
+      <a href="#syllabus" class="btn-secondary">
+        📋 View Full Syllabus
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="full-wrap">
+  <div class="stats-bar">
+    <div>
+      <div class="stat-num">12–14</div>
+      <div class="stat-label">Weeks Duration</div>
+    </div>
+    <div>
+      <div class="stat-num">3</div>
+      <div class="stat-label">Free Classes</div>
+    </div>
+    <div>
+      <div class="stat-num">₹10K</div>
+      <div class="stat-label">Course Fee</div>
+    </div>
+    <div>
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Lifetime Access</div>
+    </div>
+  </div>
+</div>
+
+<!-- DEMO BANNER -->
+<div class="full-wrap" style="padding: 4rem 2rem;">
+  <div class="demo-banner-wrap">
+    <div class="section-tag">Upcoming Event</div>
+    <div class="demo-title">🎓 FREE Trainer Sync-Up Session</div>
+    <p style="color:var(--muted); max-width:520px; margin: 0 auto;">
+      Meet your trainers live! We'll walk you through the complete syllabus, batch schedule, and answer every question — before you commit.
+    </p>
+    <div class="demo-details">
+      <div class="demo-detail">
+        <span class="icon">📅</span>
+        <span><strong>24th April 2026</strong></span>
+      </div>
+      <div class="demo-detail">
+        <span class="icon">⏰</span>
+        <span>Batch Class Timings: <strong>7:30 AM IST</strong> (Mon–Fri)</span>
+      </div>
+      <div class="demo-detail">
+        <span class="icon">💻</span>
+        <span>Mode: <strong>Online (Live)</strong></span>
+      </div>
+      <div class="demo-detail">
+        <span class="icon">📲</span>
+        <span>Demo time shared <strong>in WhatsApp group</strong></span>
+      </div>
+    </div>
+    <a href="https://wa.link/playwrightautomation_preparationbatch_sr" class="btn-primary" target="_blank" style="display:inline-flex;">
+      📲 Join WhatsApp for Demo Details
+    </a>
+  </div>
+</div>
+
+<!-- HIGHLIGHTS -->
+<section id="highlights" class="highlights">
+  <div class="section-tag">Why QA Masters</div>
+  <h2 class="section-title">Everything You Need to Get Hired</h2>
+  <p class="section-sub">A complete program built around one goal — making you interview-ready and job-confident.</p>
+  <div class="highlights-grid">
+    <div class="hl-card">
+      <div class="hl-icon">⚡</div>
+      <h3>JavaScript + TypeScript</h3>
+      <p>Both languages covered from scratch. No prior programming experience needed to join.</p>
+    </div>
+    <div class="hl-card">
+      <div class="hl-icon">🎭</div>
+      <h3>Playwright Core to Advanced</h3>
+      <p>Full architecture, locators, waits, contexts, API testing, CI/CD and more.</p>
+    </div>
+    <div class="hl-card">
+      <div class="hl-icon">🏗️</div>
+      <h3>Framework + Page Object Model</h3>
+      <p>Build a production-grade automation framework just like real companies use.</p>
+    </div>
+    <div class="hl-card">
+      <div class="hl-icon">🔥</div>
+      <h3>Daily Coding Challenges</h3>
+      <p>Sharpen your skills every single day with targeted coding exercises after each concept.</p>
+    </div>
+    <div class="hl-card">
+      <div class="hl-icon">🎯</div>
+      <h3>Weekly Mock Interviews</h3>
+      <p>Simulate real interview conditions every week so you never freeze when it matters.</p>
+    </div>
+    <div class="hl-card">
+      <div class="hl-icon">🚀</div>
+      <h3>Real-Time Live Project</h3>
+      <p>End-to-end e-commerce automation project you can add directly to your resume.</p>
+    </div>
+    <div class="hl-card">
+      <div class="hl-icon">🎬</div>
+      <h3>Recordings + Lifetime Access</h3>
+      <p>All class recordings and notes uploaded to Drive daily with lifetime access.</p>
+    </div>
+    <div class="hl-card">
+      <div class="hl-icon">🤝</div>
+      <h3>Support Until You Get Hired</h3>
+      <p>Continuous trainer support for resume review, interview prep, and guidance until you secure a job.</p>
+    </div>
+    <div class="hl-card">
+      <div class="hl-icon">🔁</div>
+      <h3>DevOps & CI/CD Integration</h3>
+      <p>Jenkins, GitHub Actions, Git — everything you need for a complete SDET profile.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TRAINERS -->
+<section id="trainers">
+  <div class="section-tag">Your Instructors</div>
+  <h2 class="section-title">Learn from Industry Experts</h2>
+  <p class="section-sub">Experienced SDET professionals who've worked in real projects and know exactly what interviewers look for.</p>
+  <div class="trainers-grid">
+    <div class="trainer-card">
+      <div class="trainer-avatar">👨‍💻</div>
+      <div class="trainer-info">
+        <h3>Mohan</h3>
+        <div class="trainer-role">Lead Trainer — Playwright & SDET</div>
+        <p>Senior automation professional with deep expertise in Playwright, TypeScript, Selenium Java, and CI/CD. Passionate about training and helping students crack SDET interviews at top companies.</p>
+        <div class="trainer-links">
+          <a href="https://www.linkedin.com/in/priyamohanbhaskaravenkatamohanddev/" target="_blank">🔗 LinkedIn</a>
+          <a href="https://wa.me/917483384868" target="_blank">📲 WhatsApp</a>
+        </div>
+      </div>
+    </div>
+    <div class="trainer-card">
+      <div class="trainer-avatar">👩‍💻</div>
+      <div class="trainer-info">
+        <h3>Priyanka</h3>
+        <div class="trainer-role">Lead Trainer — Automation & QA</div>
+        <p>QA automation expert with hands-on experience in Playwright frameworks, API testing, and real-time project development. Dedicated to making automation accessible for every student.</p>
+        <div class="trainer-links">
+          <a href="https://www.linkedin.com/in/priyanka-reddy-b4179a359/" target="_blank">🔗 LinkedIn</a>
+          <a href="https://wa.me/919346161854" target="_blank">📲 WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SYLLABUS -->
+<section id="syllabus">
+  <div class="section-tag">Course Content</div>
+  <h2 class="section-title">Complete Syllabus</h2>
+  <p class="section-sub">Comprehensive curriculum from JavaScript basics to advanced Playwright framework design. Click any module to expand.</p>
+  <div class="syllabus-grid" id="syllabusGrid">
+
+    <div class="syllabus-module">
+      <div class="module-header" onclick="toggle(this)">
+        <span class="module-num">01</span>
+        <span class="module-title">Playwright Introduction</span>
+        <span class="module-toggle">▼</span>
+      </div>
+      <div class="module-body">
+        <ul>
+          <li>What is Playwright and key benefits</li>
+          <li>Playwright vs Selenium comparison</li>
+          <li>Playwright Architecture overview</li>
+          <li>Multi-browser architecture deep dive</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="syllabus-module">
+      <div class="module-header" onclick="toggle(this)">
+        <span class="module-num">02</span>
+        <span class="module-title">JavaScript Essentials</span>
+        <span class="module-toggle">▼</span>
+      </div>
+      <div class="module-body">
+        <ul>
+          <li>Variables using let, const and var</li>
+          <li>Data types and operators</li>
+          <li>Conditional statements and loops</li>
+          <li>Functions including arrow functions</li>
+          <li>Arrays and their usage</li>
+          <li>ES6 features – destructuring, spread/rest</li>
+          <li>Classes and objects</li>
+          <li>Promises and Async/Await</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="syllabus-module">
+      <div class="module-header" onclick="toggle(this)">
+        <span class="module-num">03</span>
+        <span class="module-title">TypeScript for Automation</span>
+        <span class="module-toggle">▼</span>
+      </div>
+      <div class="module-body">
+        <ul>
+          <li>TypeScript introduction and advantages</li>
+          <li>Types vs interfaces</li>
+          <li>Enums and union types</li>
+          <li>Classes, constructors, and inheritance</li>
+          <li>Access modifiers (public, private, protected)</li>
+          <li>Optional chaining</li>
+          <li>Design patterns – Singleton & Builder</li>
+          <li>Async/Await in TypeScript</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="syllabus-module">
+      <div class="module-header" onclick="toggle(this)">
+        <span class="module-num">04</span>
+        <span class="module-title">Playwright Setup & Config</span>
+        <span class="module-toggle">▼</span>
+      </div>
+      <div class="module-body">
+        <ul>
+          <li>Installing Node.js and VS Code</li>
+          <li>Setting up Playwright project</li>
+          <li>Browser config – Chromium, Firefox, WebKit</li>
+          <li>First test creation and execution</li>
+          <li>Understanding playwright.config.ts</li>
+          <li>Test runner setup</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="syllabus-module">
+      <div class="module-header" onclick="toggle(this)">
+        <span class="module-num">05</span>
+        <span class="module-title">Playwright Architecture</span>
+        <span class="module-toggle">▼</span>
+      </div>
+      <div class="module-body">
+        <ul>
+          <li>Browser, context, and page concepts</li>
+          <li>Frames and isolation handling</li>
+          <li>Playwright Test vs Playwright Library</li>
+          <li>Test fixtures</li>
+          <li>Playwright Inspector</li>
+          <li>Trace Viewer for debugging</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="syllabus-module">
+      <div class="module-header" onclick="toggle(this)">
+        <span class="module-num">06</span>
+        <span class="module-title">Browser & Navigation</span>
+        <span class="module-toggle">▼</span>
+      </div>
+      <div class="module-body">
+        <ul>
+          <li>Launching browsers</li>
+          <li>Page navigation commands</li>
+          <li>Title and content validation</li>
+          <li>Browser context handling</li>
+          <li>Tab and window management</li>
+          <li>Page lifecycle handling</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="syllabus-module">
+      <div class="module-header" onclick="toggle(this)">
+        <span class="module-num">07</span>
+        <span class="module-title">Locators & Element Commands</span>
+        <span class="module-toggle">▼</span>
+      </div>
+      <div class="module-body">
+        <ul>
+          <li>CSS and XPath locators</li>
+          <li>Playwright locator engine</li>
+          <li>Text and role-based locators</li>
+          <li>Filtered and chained locators</li>
+          <li>Auto-waiting behaviour</li>
+          <li>Codegen tool for auto-generation</li>
+          <li>Handling dynamic elements</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="syllabus-module">
+      <div class="module-header" onclick="toggle(this)">
+        <span class="module-num">08</span>
+        <span class="module-title">Tables, Forms & Checkboxes</span>
+        <span class="module-toggle">▼</span>
+      </div>
+      <div class="module-body">
+        <ul>
+          <li>Web table handling and data extraction</li>
+          <li>Checkboxes and radio buttons</li>
+          <li>Dropdowns and multi-select</li>
+          <li>Form submission</li>
+          <li>Alerts, confirmations, prompts</li>
+          <li>File uploads and dialogs</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="syllabus-module">
+      <div class="module-header" onclick="toggle(this)">
+        <span class="module-num">09</span>
+        <span class="module-title">Waits, Actions & Complex UI</span>
+        <span class="module-toggle">▼</span>
+      </div>
+      <div class="module-body">
+        <ul>
+          <li>Auto-waits and explicit waits</li>
+          <li>Mouse & keyboard interactions</li>
+          <li>Drag and drop, right-click</li>
+          <li>Scrolling and viewport handling</li>
+          <li>Shadow DOM and iframes</li>
+          <li>Infinite scrolling and pagination</li>
+          <li>AJAX and network synchronization</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="syllabus-module">
+      <div class="module-header" onclick="toggle(this)">
+        <span class="module-num">10</span>
+        <span class="module-title">Browser Contexts & Auth</span>
+        <span class="module-toggle">▼</span>
+      </div>
+      <div class="module-body">
+        <ul>
+          <li>Browser context concepts</li>
+          <li>Cookies and local storage management</li>
+          <li>Authentication strategies</li>
+          <li>Saving and reusing login states</li>
+          <li>HTTP authentication</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="syllabus-module">
+      <div class="module-header" onclick="toggle(this)">
+        <span class="module-num">11</span>
+        <span class="module-title">Advanced Playwright & Framework</span>
+        <span class="module-toggle">▼</span>
+      </div>
+      <div class="module-body">
+        <ul>
+          <li>Playwright Test Runner deep dive</li>
+          <li>Fixtures, annotations, grouping</li>
+          <li>Parameterized test cases</li>
+          <li>Parallel execution</li>
+          <li>Reporting and visual testing</li>
+          <li>Page Object Model (POM) design</li>
+          <li>Cross-browser execution</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="syllabus-module">
+      <div class="module-header" onclick="toggle(this)">
+        <span class="module-num">12</span>
+        <span class="module-title">API Testing with Playwright</span>
+        <span class="module-toggle">▼</span>
+      </div>
+      <div class="module-body">
+        <ul>
+          <li>API testing with CRUD operations</li>
+          <li>GET, POST, PUT, DELETE requests</li>
+          <li>API mocking</li>
+          <li>Network interception and modification</li>
+          <li>Response validation</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="syllabus-module">
+      <div class="module-header" onclick="toggle(this)">
+        <span class="module-num">13</span>
+        <span class="module-title">Real-Time Live Project</span>
+        <span class="module-toggle">▼</span>
+      </div>
+      <div class="module-body">
+        <ul>
+          <li>End-to-end framework development</li>
+          <li>E-commerce application automation</li>
+          <li>Project structure design</li>
+          <li>Page objects and fixtures</li>
+          <li>Test data management</li>
+          <li>Logging, reporting, and assertions</li>
+          <li>Cross-browser execution setup</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="syllabus-module">
+      <div class="module-header" onclick="toggle(this)">
+        <span class="module-num">14</span>
+        <span class="module-title">DevOps, CI/CD & Git</span>
+        <span class="module-toggle">▼</span>
+      </div>
+      <div class="module-body">
+        <ul>
+          <li>Jenkins setup and integration</li>
+          <li>CI pipeline execution</li>
+          <li>Jenkinsfile configuration</li>
+          <li>GitHub Actions integration</li>
+          <li>Git version control and core commands</li>
+          <li>Git and GitHub workflow</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" style="text-align:center;">
+  <div class="section-tag">Investment</div>
+  <h2 class="section-title">Simple, Transparent Pricing</h2>
+  <p class="section-sub" style="margin:0 auto 3rem;">Try before you pay — first 3 classes are completely free.</p>
+  <div class="pricing-card">
+    <div class="pricing-badge">✅ First 3 Classes Free</div>
+    <div class="pricing-sub" style="margin-bottom:1rem;">Full Course Fee — Pay only after 3 free classes</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.5rem; text-align:center;">
+      <div style="background:rgba(124,58,237,0.1); border:1px solid rgba(124,58,237,0.25); border-radius:10px; padding:1rem;">
+        <div style="font-size:0.75rem; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.4rem;">🇮🇳 India</div>
+        <div style="font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; color:#c4b5fd;">₹11,000</div>
+      </div>
+      <div style="background:rgba(6,182,212,0.1); border:1px solid rgba(6,182,212,0.25); border-radius:10px; padding:1rem;">
+        <div style="font-size:0.75rem; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:0.4rem;">🇺🇸 USA / International</div>
+        <div style="font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; color:var(--accent2);">$130</div>
+      </div>
+    </div>
+    <ul class="pricing-features">
+      <li><span class="check">✓</span> <span>JavaScript + TypeScript from scratch</span></li>
+      <li><span class="check">✓</span> <span>Playwright Core to Advanced</span></li>
+      <li><span class="check">✓</span> <span>Framework Design + Page Object Model</span></li>
+      <li><span class="check">✓</span> <span>Daily Coding Challenges <span class="free-tag">DAILY</span></span></li>
+      <li><span class="check">✓</span> <span>Weekly Mock Interviews <span class="free-tag">WEEKLY</span></span></li>
+      <li><span class="check">✓</span> <span>Real-Time E-Commerce Project</span></li>
+      <li><span class="check">✓</span> <span>DevOps, Jenkins & GitHub Actions</span></li>
+      <li><span class="check">✓</span> <span>Lifetime access to recordings & notes</span></li>
+      <li><span class="check">✓</span> <span>Trainer support until you get hired</span></li>
+      <li><span class="check">✓</span> <span>Resume preparation & review</span></li>
+    </ul>
+    <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+      <a href="https://wa.link/playwrightautomation_preparationbatch_sr" class="btn-primary" target="_blank">
+        📲 Join Free Demo — 24th April
+      </a>
+    </div>
+    <p style="color:var(--muted); font-size:0.82rem; margin-top:1rem;">
+      📅 Batch: Mon–Fri &nbsp;|&nbsp; ⏰ 7:30 AM IST &nbsp;|&nbsp; 🗓 12–14 Weeks
+    </p>
+  </div>
+</section>
+
+<!-- CODING EXAMS -->
+<section id="coding-exams">
+  <div class="section-tag">Practice</div>
+  <h2 class="section-title">Daily Coding Exams</h2>
+  <p class="section-sub">After every class a coding exam is shared to reinforce your learning. Click any day to attempt the exam.</p>
+  <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); gap:1rem;">
+
+    <a href="https://docs.google.com/forms/d/1WqmVmifIOFLe-9u9jeAeoFaR-cztzY73AmEBMSoNMSI/edit" target="_blank" style="text-decoration:none; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1.5rem; display:flex; align-items:center; gap:1rem; transition:border-color 0.2s, transform 0.2s;" onmouseover="this.style.borderColor='rgba(124,58,237,0.5)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='var(--border)'; this.style.transform='translateY(0)'">
+      <div style="background:linear-gradient(135deg,var(--accent),#6d28d9); color:#fff; font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem; width:52px; height:52px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">D1</div>
+      <div>
+        <div style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem; color:var(--text);">Day 1 Coding Exam</div>
+        <div style="color:var(--muted); font-size:0.82rem; margin-top:0.2rem;">Selenium / Playwright Architecture</div>
+        <div style="color:var(--accent2); font-size:0.78rem; margin-top:0.3rem; font-weight:600;">📝 Attempt Exam →</div>
+      </div>
+    </a>
+
+    <a href="https://docs.google.com/forms/d/1dOPOsTt7Dv0WqgdvLFnmLJjYl1PG7pXt-lATm7X-dW8/edit" target="_blank" style="text-decoration:none; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1.5rem; display:flex; align-items:center; gap:1rem; transition:border-color 0.2s, transform 0.2s;" onmouseover="this.style.borderColor='rgba(124,58,237,0.5)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='var(--border)'; this.style.transform='translateY(0)'">
+      <div style="background:linear-gradient(135deg,#0891b2,#06b6d4); color:#fff; font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem; width:52px; height:52px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">D2</div>
+      <div>
+        <div style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem; color:var(--text);">Day 2 Coding Exam</div>
+        <div style="color:var(--muted); font-size:0.82rem; margin-top:0.2rem;">JavaScript Variables</div>
+        <div style="color:var(--accent2); font-size:0.78rem; margin-top:0.3rem; font-weight:600;">📝 Attempt Exam →</div>
+      </div>
+    </a>
+
+    <a href="https://docs.google.com/forms/d/1QlIXCPprSUyt8GSWs9uZ3iqB_tASumiA-o2S1hwNCaQ/edit" target="_blank" style="text-decoration:none; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1.5rem; display:flex; align-items:center; gap:1rem; transition:border-color 0.2s, transform 0.2s;" onmouseover="this.style.borderColor='rgba(124,58,237,0.5)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='var(--border)'; this.style.transform='translateY(0)'">
+      <div style="background:linear-gradient(135deg,#d97706,#f59e0b); color:#fff; font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem; width:52px; height:52px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">D3</div>
+      <div>
+        <div style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem; color:var(--text);">Day 3 Coding Exam</div>
+        <div style="color:var(--muted); font-size:0.82rem; margin-top:0.2rem;">JavaScript Architecture &amp; Datatypes</div>
+        <div style="color:var(--accent2); font-size:0.78rem; margin-top:0.3rem; font-weight:600;">📝 Attempt Exam →</div>
+      </div>
+    </a>
+
+    <a href="https://docs.google.com/forms/d/1fnfQOaZEPl-dCJKeYnR5q0P8qlMtIPE-7kR-ziJANTA/edit" target="_blank" style="text-decoration:none; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1.5rem; display:flex; align-items:center; gap:1rem; transition:border-color 0.2s, transform 0.2s;" onmouseover="this.style.borderColor='rgba(124,58,237,0.5)'; this.style.transform='translateY(-3px)'" onmouseout="this.style.borderColor='var(--border)'; this.style.transform='translateY(0)'">
+      <div style="background:linear-gradient(135deg,#059669,#10b981); color:#fff; font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem; width:52px; height:52px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">D4</div>
+      <div>
+        <div style="font-family:'Syne',sans-serif; font-weight:700; font-size:0.95rem; color:var(--text);">Day 4 Coding Exam</div>
+        <div style="color:var(--muted); font-size:0.82rem; margin-top:0.2rem;">JavaScript Fundamentals</div>
+        <div style="color:var(--accent2); font-size:0.78rem; margin-top:0.3rem; font-weight:600;">📝 Attempt Exam →</div>
+      </div>
+    </a>
+
+  </div>
+  <div style="margin-top:1.5rem; background:rgba(124,58,237,0.08); border:1px solid rgba(124,58,237,0.2); border-radius:10px; padding:1rem 1.5rem; display:flex; align-items:center; gap:0.75rem;">
+    <span style="font-size:1.3rem;">💡</span>
+    <span style="color:var(--muted); font-size:0.88rem;">More coding exams are added daily after each class. Join the WhatsApp group to get notified instantly when a new exam is posted!</span>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-tag">Questions</div>
+  <h2 class="section-title">Frequently Asked Questions</h2>
+  <p class="section-sub">Everything you need to know before joining.</p>
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Will I get recordings for the sessions?
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Yes! All class recordings and notes are uploaded to Google Drive daily. You have lifetime access to all materials even after the batch ends.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Is this useful for freshers with no coding experience?
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Absolutely! All concepts are explained from scratch. No prior programming or automation experience is required to join this course.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        What if I miss a class?
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">No worries! You will get the recording for each session the same day. You can watch and catch up at your own pace. Lifetime access ensures you never fall behind.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        How does the mock interview work?
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Every week there will be a mock interview session simulating real interview scenarios. This includes scenario-based questions, framework design discussions, and live coding — so you're fully prepared before the real thing.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        When do I pay the course fee?
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">The first 3 classes are completely free. After attending 3 classes, if you wish to continue, you can enroll by paying the course fee of ₹11,000 (India) or $130 (USA/International). No pressure — decide after experiencing the quality yourself!</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Will I get support after the batch for interviews?
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">Yes! You will receive continuous support from the trainers until you secure a job. This includes resume review, interview preparation, mock interviews, and guidance on handling real interview questions.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Is this training only for manual testers switching to automation?
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-a">This training is perfect for manual testers, freshers, and even experienced automation engineers who want to upgrade from Selenium to Playwright. Anyone planning to switch companies in the coming months will greatly benefit.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-tag">Get In Touch</div>
+  <h2 class="section-title">Contact the Trainers</h2>
+  <p class="section-sub">Have questions? Reach out directly to Mohan or Priyanka on WhatsApp or LinkedIn.</p>
+  <div style="margin-bottom:2rem; text-align:center;">
+    <a href="https://wa.link/playwrightautomation_preparationbatch_sr" target="_blank" class="btn-primary" style="display:inline-flex; font-size:1rem;">
+      📲 Want to Know More About the Course? Join WhatsApp Group
+    </a>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-card">
+      <h3>👨‍💻 Mohan</h3>
+      <div class="role">Lead Trainer</div>
+      <div class="contact-detail">📱 <a href="https://wa.me/917483384868" target="_blank">+91 74833 84868</a></div>
+      <div class="contact-detail">🔗 <a href="https://www.linkedin.com/in/priyamohanbhaskaravenkatamohanddev/" target="_blank">LinkedIn Profile</a></div>
+    </div>
+    <div class="contact-card">
+      <h3>👩‍💻 Priyanka</h3>
+      <div class="role">Lead Trainer</div>
+      <div class="contact-detail">📱 <a href="https://wa.me/919346161854" target="_blank">+91 93461 61854</a></div>
+      <div class="contact-detail">🔗 <a href="https://www.linkedin.com/in/priyanka-reddy-b4179a359/" target="_blank">LinkedIn Profile</a></div>
+    </div>
+    <div class="contact-card">
+      <h3>📲 WhatsApp Group</h3>
+      <div class="role">Batch Community</div>
+      <div class="contact-detail">🔗 <a href="https://wa.link/playwrightautomation_preparationbatch_sr" target="_blank">Join the Group</a></div>
+      <div class="contact-detail">📅 Demo: 24th April 2026</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div style="margin-bottom:0.75rem;">
+    <strong>QA Masters</strong> — Playwright Automation Training
+  </div>
+  <div>Trainers: Mohan &amp; Priyanka &nbsp;|&nbsp; Batch Class Timings: 7:30 AM IST, Mon–Fri &nbsp;|&nbsp; Duration: 12–14 Weeks &nbsp;|&nbsp; India: ₹11,000 &nbsp;|&nbsp; USA: $130</div>
+  <div style="margin-top:0.5rem;">© 2026 QA Masters. All rights reserved.</div>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.link/playwrightautomation_preparationbatch_sr" class="wa-float" target="_blank" title="Join WhatsApp Group">📲</a>
+
+<script>
+  function toggle(header) {
+    const body = header.nextElementSibling;
+    const icon = header.querySelector('.module-toggle');
+    const isOpen = body.classList.contains('open');
+    // close all
+    document.querySelectorAll('.module-body').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.module-toggle').forEach(i => i.style.transform = '');
+    if (!isOpen) {
+      body.classList.add('open');
+      icon.style.transform = 'rotate(180deg)';
+    }
+  }
+
+  function toggleFaq(qEl) {
+    const answer = qEl.nextElementSibling;
+    const icon = qEl.querySelector('.faq-icon');
+    const isOpen = answer.classList.contains('open');
+    document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+    document.querySelectorAll('.faq-icon').forEach(i => i.textContent = '+');
+    if (!isOpen) {
+      answer.classList.add('open');
+      icon.textContent = '−';
+    }
+  }
+
+  // Intersection observer for subtle fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.hl-card, .trainer-card, .syllabus-module, .contact-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
